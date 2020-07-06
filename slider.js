@@ -17,18 +17,23 @@ function Slider (opt) {
 
 Slider.prototype.init = function () { 
     var self = this
-    var sliderCon = document.querySelector('#' + this.id)
-    sliderCon.onmouseenter = function(){
-        self.clear()
-    }
-    sliderCon.onmouseleave = function(){
-        self.timer = setTimeout(function (){
+    // var sliderCon = document.querySelector('#' + this.id)
+    // sliderCon.onmouseenter = function(){
+    //     self.clear()
+    // }
+    // sliderCon.onmouseleave = function(){
+    //     self.timer = setTimeout(function (){
        
-            self.next()
-        }, self.time)
-    }
+    //         self.next()
+    //     }, self.time)
+    // }
 
     this.imgList = sliderCon.getElementsByClassName('slider-img')
+    for (let i = 0; i < this.imgList.length; i++) {
+        this.imgList[i].onclick = function(){
+            self.spring(i)
+        }
+    }
 
     this.slidesLength = this.imgList.length
     
@@ -112,6 +117,13 @@ Slider.prototype.next = function(){
     this.clear()
     this.update()
 }
+
+Slider.prototype.spring = function(index){
+    this.index = index
+    this.clear()
+    this.update()
+}
+
 Slider.prototype.clear = function(){
     clearTimeout(this.timer)
 }

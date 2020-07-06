@@ -14,7 +14,7 @@ function Swiper (opt) {
     this.init()
 
     var self = this
-    setTimeout(function(){
+    this.timer = setTimeout(function(){
        
         self.next()
     }, this.time)
