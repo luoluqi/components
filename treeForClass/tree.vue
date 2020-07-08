@@ -69,48 +69,56 @@ export default {
     methods: {
         select(data){
             this.$emit('select', data)
-            var isHave = false
-            for(let item of this.selectedList) {
-                if (item[this.props.id] == data[this.props.id]) {
-                    isHave = true
-                }
-            }
-            if (!isHave) {
-                this.selectedList.push(data)
-            }
         },
         unselect(data){
             this.$emit('unselect', data)
-            for(var i = this.selectedList.length - 1; i>=0; i--) {
-                var item = this.selectedList[i]
-                 if (item[this.props.id] == data[this.props.id]) {
-                    this.selectedList.splice(i, 1)
-                }
-            }
         },
         allUnSelect(){
-            
-            for (let item of this.$refs.treeItem) {
-                item.allUnSelect()
+            if (this.$refs.treeItem) {
+                for (let item of this.$refs.treeItem) {
+                    item.allUnSelect()
+                }
             }
+            
         },
         allSelect(){
-             for (let item of this.$refs.treeItem) {
-                item.allSelect()
+            if (this.$refs.treeItem) {
+                for (let item of this.$refs.treeItem) {
+                    item.allSelect()
+                }
             }
         },
         getSelectedList () {
-            return this.selectedList
+            var self = this
+            var list = []
+            function getList(children){
+             
+                if (children) {
+                    for (let item of children) {
+                        if(item.getSelected()){
+                            list.push(item.data)
+                        }
+
+                        getList(item.$refs.treeItem)
+                    }
+                }
+            }
+            getList(this.$refs.treeItem)
+
+            return list
         },
         isAllSelected () {
             var isAll = true
-            for (let item of this.$refs.treeItem) {
-                var flag = item.isAllSelected()
-              
-                if (!flag) {
-                    isAll = false
+            if (this.$refs.treeItem) {
+                for (let item of this.$refs.treeItem) {
+                    var flag = item.isAllSelected()
+                
+                    if (!flag) {
+                        isAll = false
+                    }
                 }
             }
+            
             return isAll
         }
     }

@@ -1,22 +1,22 @@
 <template>
     <div class="tree-item">
        
-        <div v-if="data[props.children].length > 0" @click="selectHandle()"  class="tree-name">
+        <div v-if="data[props.children] && data[props.children].length > 0" @click="selectHandle()"  class="tree-name">
           
-            <img v-if="isSelected" class="checkbox middle" src="@/assets/img/checkbox-a.png" alt="">
-             <img v-else class="checkbox middle" src="@/assets/img/checkbox.png" alt="">
+            <img v-if="isSelected" class="checkbox middle" src="./img/checkbox-a.png" alt="">
+             <img v-else class="checkbox middle" src="./img/checkbox.png" alt="">
             <div class="middle dept-info"> 
                  <div class="middle dept-name">{{data[props.label]}}</div> 
                  <div class="xiaji"  @click.stop="open">
-                     <img src="@/assets/img/subsd.png" class="subsd middle" alt="">
+                     <img src="./img/subsd.png" class="subsd middle" alt="">
                      下级
                  </div>
                  
              </div>
         </div>
          <div  v-else class="tt-name" @click="selectHandle()" :class="{'selected': isSelected}">
-             <img v-if="isSelected" class="checkbox middle" src="@/assets/img/checkbox-a.png" alt="">
-             <img v-else class="checkbox middle" src="@/assets/img/checkbox.png" alt="">
+             <img v-if="isSelected" class="checkbox middle" src="./img/checkbox-a.png" alt="">
+             <img v-else class="checkbox middle" src="./img/checkbox.png" alt="">
              <div class="middle man-info"> 
                  <!-- <img v-if="data.img" :src="data.img" @error="defaultBackImg" class="head-img middle">
                  <img v-else src="@/assets/img/default_head.png" class="head-img middle" alt=""> -->
@@ -139,11 +139,6 @@ export default {
         },
         selectTrueOrFalse(flag){
             this.isSelected = flag
-            if (this.isSelected) {   
-                this.$emit('select', this.data)
-            } else {
-                 this.$emit('unselect', this.data)
-            }
         },
 
         select(data){
@@ -186,7 +181,7 @@ export default {
             this.isSelected = true
             if (this.$refs.treeItem) {
                  for (let item of this.$refs.treeItem) {
-                    item.selectTrueOrFalse(true)
+                    item.allSelect(true)
                 }
             }
         },
@@ -194,7 +189,7 @@ export default {
             this.isSelected = false
             if (this.$refs.treeItem) {
                  for (let item of this.$refs.treeItem) {
-                    item.selectTrueOrFalse(false)
+                    item.allUnSelect(false)
                 }
             }
         },
