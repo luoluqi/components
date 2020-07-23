@@ -85,6 +85,8 @@ Swiper.prototype.init = function () {
 
     var SlideDom = sliderCon.getElementsByClassName(this.childClass)
     this.slidesLength = SlideDom.length
+    
+  
     if (this.slidesLength > 1) {
         var cloneDom1 = SlideDom[0].cloneNode(true) // 向最后append
         var cloneDom2 = SlideDom[this.slidesLength - 1].cloneNode(true) // 向最前append
@@ -99,6 +101,12 @@ Swiper.prototype.init = function () {
     } else {
         this.transition = 0
         this.index = 0
+    }
+
+    var domList = sliderCon.getElementsByClassName(this.childClass)
+    sliderCon.style.width = domList.length * this.conWidth + 'px'
+    for(item of domList) {
+        item.style.width = this.conWidth + 'px'
     }
 
    
