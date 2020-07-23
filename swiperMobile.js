@@ -1,9 +1,13 @@
 function Swiper (opt) {
     this.id = opt.id
     this.childClass = opt.childClass
-    this.time = opt.time || 3000
+    this.time = opt.time || 5000
     this.showDot = opt.showDot || true
-    this.second = 0.2
+    this.loop = true
+    if (opt.loop == false) {
+        this.loop = false
+    }
+    this.second = 0.5
     this.transition = this.second
     this.index = 1
     this.slidesLength = 1
@@ -18,10 +22,13 @@ function Swiper (opt) {
     this.init()
 
     var self = this
-    this.timer = setTimeout(function(){
+    if (this.loop) {
+        this.timer = setTimeout(function(){
        
-        self.next()
-    }, this.time)
+            self.next()
+        }, this.time)
+    }
+    
     
 }
 Swiper.prototype.init = function () {
@@ -50,14 +57,14 @@ Swiper.prototype.init = function () {
       // console.log(this.offsetX, this.offsetY)
     
       var left = parseInt(this.left.replace('px', ''))
-      console.log(left)
+     
       sliderCon.style.left = (left + this.offsetX) + 'px'     
         
     }
     sliderCon.ontouchend = function(){
         sliderCon.style.transition = self.second + 's'
         self.transition = self.second + 's'
-       console.log(this.offsetX)
+      
         // sliderCon.style.left = '0px' 
         if (this.offsetX < -100) {
             self.next()
@@ -118,7 +125,7 @@ Swiper.prototype.createDot = function () {
 Swiper.prototype.setLeft = function () {
     var self = this
 
-    console.log('set left:', this.index)
+ 
     var dom = document.getElementById(this.id)
     dom.style.transition = this.transition + 's'
     dom.style.left = -(this.index * this.conWidth) + 'px'
@@ -129,19 +136,16 @@ Swiper.prototype.setLeft = function () {
         dotList[i].classList.remove('banner-show-bgcolor')
     }
 
-    // if (this.index - 1 > )
-    if (this.index > this.slidesLength) {
-        dotList[0].classList.add('banner-show-bgcolor')
-    } else {
-        if (this.index == 0) {
-            dotList[this.slidesLength-1].classList.add('banner-show-bgcolor')
-        } else {
-             dotList[this.index-1].classList.add('banner-show-bgcolor')
-        }
-       
+    console.log(this.index)
+    var dotIndex = this.index - 1
+    if (dotIndex < 0) {
+        dotIndex = this.slidesLength-1
     }
-
-
+    if (dotIndex > this.slidesLength-1) {
+        dotIndex = 0
+    }
+    dotList[dotIndex].classList.add('banner-show-bgcolor')
+   
     if (this.index > this.slidesLength) {
         this.timer1 = setTimeout(function(){
              self.transition = 0
@@ -177,11 +181,13 @@ Swiper.prototype.next = function () {
 
       this.index++
       this.setLeft()
-
-    
-    this.timer = setTimeout(function(){
-        self.next()
-    }, this.time)
+   
+    if (this.loop) {
+        this.timer = setTimeout(function(){
+            self.next()
+        }, this.time)
+    }
+   
 }
 Swiper.prototype.prev = function () {
     var self = this
@@ -191,10 +197,12 @@ Swiper.prototype.prev = function () {
     this.index--
     this.setLeft()
 
+    if (this.loop) {
+        this.timer = setTimeout(function(){
+            self.prev()
+        }, this.time)
+    }
     
-    this.timer = setTimeout(function(){
-        self.prev()
-    }, this.time)
 }
 Swiper.prototype.spring = function(index) {
     this.clear()
@@ -206,10 +214,12 @@ Swiper.prototype.spring = function(index) {
      this.index = index + 1
      this.setLeft()
     
+    if (this.loop) {
+        this.timer = setTimeout(() => {
+            self.next()
+        }, this.time)
+    }
     
-    this.timer = setTimeout(() => {
-        self.next()
-    }, this.time)
 }
 Swiper.prototype.clear = function() {
     clearTimeout(this.timer)
