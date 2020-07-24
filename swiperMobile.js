@@ -2,7 +2,7 @@ function Swiper (opt) {
     this.id = opt.id
     this.childClass = opt.childClass
     this.time = opt.time || 5000
-    this.distance = opt.distance || 5
+    this.distance = opt.distance || 10
     this.showDot = opt.showDot || true
     this.loop = true
     if (opt.loop == false) {
@@ -68,10 +68,7 @@ Swiper.prototype.init = function () {
         self.transition = self.second + 's'
       
         
-        if (!this.offsetX) {
-            this.offsetX = -(self.distance + 1)
-        }
-     
+       
         if (this.offsetX < -self.distance) {
             self.next()
         }
