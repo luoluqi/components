@@ -2,12 +2,13 @@ function Swiper (opt) {
     this.id = opt.id
     this.childClass = opt.childClass
     this.time = opt.time || 5000
+    this.distance = opt.distance || 5
     this.showDot = opt.showDot || true
     this.loop = true
     if (opt.loop == false) {
         this.loop = false
     }
-    this.second = 0.5
+    this.second = 0.3
     this.transition = this.second
     this.index = 1
     this.slidesLength = 1
@@ -62,21 +63,26 @@ Swiper.prototype.init = function () {
         
     }
     sliderCon.ontouchend = function(){
+        
         sliderCon.style.transition = self.second + 's'
         self.transition = self.second + 's'
       
-        // sliderCon.style.left = '0px' 
-        if (this.offsetX < -100) {
+        
+        if (!this.offsetX) {
+            this.offsetX = -(self.distance + 1)
+        }
+     
+        if (this.offsetX < -self.distance) {
             self.next()
         }
-        if (-100 < this.offsetX < 0) {
+        if (-self.distance < this.offsetX < 0) {
             self.spring(self.index - 1)
         }
 
-        if (this.offsetX > 100) {
+        if (this.offsetX > self.distance) {
             self.prev()
         }
-        if (0 < this.offsetX < 100) {
+        if (0 < this.offsetX < self.distance) {
             self.spring(self.index - 1)
         }
     }
@@ -144,7 +150,7 @@ Swiper.prototype.setLeft = function () {
         dotList[i].classList.remove('banner-show-bgcolor')
     }
 
-    console.log(this.index)
+    
     var dotIndex = this.index - 1
     if (dotIndex < 0) {
         dotIndex = this.slidesLength-1
